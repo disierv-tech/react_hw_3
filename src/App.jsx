@@ -1,9 +1,14 @@
 import { useState } from "react";
 import "./App.css";
+import ToDoList from "./ToDoList";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([
+    { id: 1, name: "Покормити кота" },
+    { id: 2, name: "Полити квіти" },
+    { id: 3, name: "Зателефонувати бабусі" },
+  ]);
 
   function addTodo() {
     const text = inputValue.trim();
@@ -14,7 +19,7 @@ function App() {
 
     const newTodo = {
       id: Date.now(),
-      text: text,
+      name: text,
     };
 
     setTodos((prevTodos) => [...prevTodos, newTodo]);
@@ -27,6 +32,10 @@ function App() {
     }
   }
 
+  function deleteTodo(id) {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  }
+
   return (
     <>
       <input
@@ -35,12 +44,7 @@ function App() {
         onKeyDown={handleKeyDown}
       />
       <button onClick={addTodo}>Додати запис</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.text}</li>
-        ))}
-      </ul>
-      <p>Кількість: {todos.length}</p>
+      <ToDoList toDos={todos} deleteTodo={deleteTodo} />
     </>
   );
 }
